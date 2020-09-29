@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package agentcode;
 
-/**
- *
- * @author Az
- */
 public class EnemyElement extends WorldElement{
+
+    public EnemyElement(int currentX, int currentY) {
+        super(currentX, currentY);
+    }
 
     @Override
     public String toString() {
@@ -18,7 +13,16 @@ public class EnemyElement extends WorldElement{
 
     @Override
     public World playTurn(World realWorld) {
-        //do nothing, maybe implement random movement later for fun
+        switch((int)(Math.random() * 5)){
+            case 1: moveUp(realWorld);
+                break;
+            case 2: moveDown(realWorld);
+                break;
+            case 3: moveLeft(realWorld);
+                break;
+            case 4: moveRight(realWorld);
+                break;
+        }
         return realWorld;
     }
     

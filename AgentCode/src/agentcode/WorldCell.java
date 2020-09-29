@@ -1,16 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package agentcode;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Az
- */
 public class WorldCell {
     protected ArrayList<WorldElement> elements;
 
@@ -41,7 +32,7 @@ public class WorldCell {
 
     @Override
     public String toString() {
-        if(elements.isEmpty()) return "0";
+        if(elements.isEmpty()) return " ";
         String result = "";
         for (WorldElement element : elements) {
             result += element.toString();

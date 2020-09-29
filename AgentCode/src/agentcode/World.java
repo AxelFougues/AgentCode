@@ -15,19 +15,27 @@ public class World {
         }
     }
     
-    public boolean addElementToCell(WorldElement element, int x, int y){
-        if( x > 0 && x < worldDimensions && y > 0 && y < worldDimensions){
-            worldGrid[x][y].addElement(element);
+    public boolean addElementToCell(WorldElement element){
+        if( element.getX() > 0 && element.getX() < worldDimensions && element.getY() > 0 && element.getY() < worldDimensions){
+            worldGrid[element.getX()][element.getY()].addElement(element);
             return true;
         }
         return false;
     }
     
-    public boolean removeElementToCell(WorldElement element, int x, int y){
-        if( x > 0 && x < worldDimensions && y > 0 && y < worldDimensions){
-            return worldGrid[x][y].removeElement(element);
+    public boolean removeElementToCell(WorldElement element){
+        if( element.getX() > 0 && element.getX() < worldDimensions && element.getY() > 0 && element.getY() < worldDimensions){
+            return worldGrid[element.getX()][element.getY()].removeElement(element);
         }
         return false;
+    }
+    
+    public WorldCell getCell(int x, int y){
+        return worldGrid[x][y];
+    }
+    
+    public void setCell(WorldCell cell, int x, int y){
+        worldGrid[x][y] = cell;
     }
 
     @Override
