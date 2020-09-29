@@ -1,15 +1,26 @@
 package agentcode;
 
+import java.util.ArrayList;
+
 public class AgentElement extends WorldElement{
     
     protected int perceptionRadius; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
     
     protected World currentWorldPerception;
+    
+    protected ArrayList<Rule> rules;
 
-    public AgentElement(int currentX, int currentY) {
+    public AgentElement(int currentX, int currentY, ArrayList<Rule> rules) {
         super(currentX, currentY);
+        this.rules = rules;
+        this.currentWorldPerception = new World(10);
     }
     
+    public AgentElement(int currentX, int currentY) {
+        super(currentX, currentY);
+        this.currentWorldPerception = new World(10);
+        this.rules = new ArrayList<>();
+    }
     //######################################################################
 
     @Override
@@ -23,24 +34,31 @@ public class AgentElement extends WorldElement{
         return next(realWorld);
     }
     
+    public void setRules(ArrayList<Rule> rules){
+        this.rules = rules;
+    }
     
     //######################################################################
     
     
     protected void updatePerception(World realWorld){ //Refresh currentWorldPerception with available world data
         if(perceptionRadius == 1){currentWorldPerception.setCell(realWorld.getCell(currentX, currentY), currentX, currentY); return;}
-        for (int x = -perceptionRadius/2; x < perceptionRadius/2; x++) {
-            for (int y = -perceptionRadius/2; y < perceptionRadius/y; y++) {
+        for (int x = -perceptionRadius/2; x <= perceptionRadius/2; x++) {
+            for (int y = -perceptionRadius/2; y <= perceptionRadius/2; y++) {
                 currentWorldPerception.setCell(realWorld.getCell(currentX + x, currentY + y), currentX + x, currentY + y);
             }
         }
     }
     
     protected World next(World realWorld){ // choose the appropriate action and execute it
-        //go through rules
+        /*
+            for (Rule rule : rules) {
+                if(rule.validate(realWorld, currentX, currentY)) DO the action
+            }
         
-        //perform action
-        
+           TBD
+            
+        */
         return realWorld;
     }
     

@@ -37,6 +37,14 @@ public class World {
     public void setCell(WorldCell cell, int x, int y){
         worldGrid[x][y] = cell;
     }
+    
+    public boolean elementExists(WorldElement element){
+        return worldGrid[element.getX()][element.getY()].containsElement(element);
+    }
+    
+    public boolean hasEmptyCell(int x , int y){
+        return worldGrid[x][y].isEmpty();
+    }
 
     @Override
     public String toString() {
