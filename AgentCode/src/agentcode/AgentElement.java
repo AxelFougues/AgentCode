@@ -1,6 +1,7 @@
 package agentcode;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AgentElement extends WorldElement{
     
@@ -51,14 +52,50 @@ public class AgentElement extends WorldElement{
     }
     
     protected World next(World realWorld){ // choose the appropriate action and execute it
-        /*
-            for (Rule rule : rules) {
-                if(rule.validate(realWorld, currentX, currentY)) DO the action
-            }
         
-           TBD
+        for (Rule rule : rules) {
+            if(rule.validate(realWorld, currentX, currentY)){
+                switch(rule.name){
+                    case "Attack":
+                        attack(realWorld);
+                        break;
+                    case "Move Random":
+                        Random rand = new Random();
+                        int move = rand.nextInt(4);
+                        switch(move){
+                            case 0: 
+                                moveUp(realWorld);
+                                break;
+                            case 1: 
+                                moveDown(realWorld);
+                                break;
+                            case 2: 
+                                moveLeft(realWorld);
+                                break;
+                            case 3: 
+                                moveRight(realWorld);
+                                break;
+                        }
+                        break;
+                    case "Chase Up":
+                        moveUp(realWorld);
+                        break;
+                    case "Chase Down":
+                        moveDown(realWorld);
+                        break;
+                    case "Chase Left":
+                        moveLeft(realWorld);
+                        break;
+                    case "Chase Right":
+                        moveRight(realWorld);
+                        break;
+                }
+                break;
+            }
+        }
+        
             
-        */
+        
         return realWorld;
     }
     
