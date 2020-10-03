@@ -6,26 +6,39 @@ public class AgentCode {
 
     public static void main(String[] args) {
         World w = new World(10);
-        
+
         //This is how to create rules
         ArrayList<Rule> rules = new ArrayList<>();
-        Rule r = new Rule();
-        Condition c1 = new Condition(Condition.Direction.S, Condition.Actor.E); //Means Is there an E-nemy  S-outh of me
-        Condition c2 = new Condition(Condition.Direction.H, Condition.Actor.N); //Means Is there an N-othing  H-ere
-        r.addCondition(c1);
-        r.addCondition(c2);
-        rules.add(r);
+        
+        
+        rules.add(Rule.buildAttackRule());
+        
+        rules.add(Rule.buildChaseUpRule());
+        rules.add(Rule.buildChaseDownRule());
+        rules.add(Rule.buildChaseLeftRule());
+        rules.add(Rule.buildChaseRightRule());
+        
+        rules.add(Rule.buildRandomMovementRule());
+        
+        rules.add(Rule.buildDownwardRestrictedRule());
+        rules.add(Rule.buildUpwardRestrictedRule());
+        rules.add(Rule.buildLeftwardRestrictedRule());
+        rules.add(Rule.buildRightwardRestrictedRule());
         
         //This is how to add elements to the world
-        w.addElementToCell(new EnemyElement(5,5));
-        w.addElementToCell(new AgentElement(5,2, rules));
+        w.addElementToCell(new EnemyElement(5, 5));
+        w.addElementToCell(new AgentElement(5, 2, rules));
         w.display();
-        
+
         //Then call playTurn to move one step forward
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             w = w.playTurn(w);
             w.display();
+            try {
+
+                Thread.sleep(1000);
+            }catch(Exception e){}
         }
     }
-    
+
 }

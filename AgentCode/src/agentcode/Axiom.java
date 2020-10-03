@@ -1,14 +1,14 @@
 package agentcode;
 
 
-public class Condition {
+public class Axiom {
     public enum Direction {N, S, E, W, H};// H = here
     public enum Actor {A, E, N} // N = nothing
     
     protected Direction direction;
     protected Actor actor;
 
-    public Condition(Direction directions, Actor actor) {
+    public Axiom(Direction directions, Actor actor) {
         this.direction = directions;
         this.actor = actor;
     }

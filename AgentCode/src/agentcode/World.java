@@ -11,6 +11,18 @@ public class World {
         for (int x = 0; x < worldDimensions; x++) {
             for (int y = 0; y < worldDimensions; y++) {
                 worldGrid[x][y] = new WorldCell();
+                if(y == 0 && x == 0){
+                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                }
+                else if(y == worldDimensions -1 && x == worldDimensions -1){
+                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                }
+                else if(y == worldDimensions -1 || x == worldDimensions -1){
+                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                }
+                else if(y == 0 || x == 0){
+                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                }
             }
         }
     }
@@ -48,14 +60,14 @@ public class World {
 
     @Override
     public String toString() {
-        String result = "============================================\n";
+        String result = "\n";
         for (int x = 0; x < worldDimensions; x++) {
             for (int y = 0; y < worldDimensions; y++) {
                 result += worldGrid[x][y].toString() + " ";
             }
             result += "\n";
         }
-        return result += "============================================\n";
+        return result += "\n";
     }
     
     public void display(){
