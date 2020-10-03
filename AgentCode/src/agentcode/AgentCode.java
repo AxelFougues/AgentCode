@@ -25,8 +25,6 @@ public class AgentCode {
         rules.add(Rule.buildLeftwardRestrictedRule());
         rules.add(Rule.buildRightwardRestrictedRule());
         
-        
-
         //This is how to add elements to the world
         w.addElementToCell(new EnemyElement(5, 5));
         w.addElementToCell(new AgentElement(5, 2, rules));

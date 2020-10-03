@@ -60,14 +60,14 @@ public class World {
 
     @Override
     public String toString() {
-        String result = "============================================\n";
+        String result = "\n";
         for (int x = 0; x < worldDimensions; x++) {
             for (int y = 0; y < worldDimensions; y++) {
                 result += worldGrid[x][y].toString() + " ";
             }
             result += "\n";
         }
-        return result += "============================================\n";
+        return result += "\n";
     }
     
     public void display(){
