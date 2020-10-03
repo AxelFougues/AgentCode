@@ -1,6 +1,7 @@
 package agentcode;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class AgentElement extends WorldElement {
 
@@ -80,42 +81,30 @@ public class AgentElement extends WorldElement {
                         moveRight(realWorld);
                     }
                     break;
-                case Move_Up:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveUp(realWorld);
-                    }
-                    break;
-                case Move_Down:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveDown(realWorld);
-                    }
-                    break;
-                case Move_Left:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveLeft(realWorld);
-                    }
-                    break;
-                case Move_Right:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveRight(realWorld);
-                    }
-                    break;
+                
                 case Move_Random:
                     if (rule.validate(realWorld, currentX, currentY)) {
-                        switch (Rule.getRandomMove()) {
-                            case Move_Up:
-                                moveUp(realWorld);
-                                break;
-                            case Move_Down:
-                                moveDown(realWorld);
-                                break;
-                            case Move_Left:
-                                moveLeft(realWorld);
-                                break;
-                            case Move_Right:
-                                moveRight(realWorld);
-                                break;
-                        }
+                        randomMove(realWorld);
+                    }
+                    break;
+                case Move_Restricted_Upward:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        randomMoveUpRestricted(realWorld);
+                    }
+                    break;
+                case Move_Restricted_Downward:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        randomMoveDownRestricted(realWorld);
+                    }
+                    break;
+                case Move_Restricted_Leftward:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        randomMoveLeftRestricted(realWorld);
+                    }
+                    break;
+                case Move_Restricted_Rightward:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        randomMoveRightRestricted(realWorld);
                     }
                     break;
             }
@@ -128,6 +117,89 @@ public class AgentElement extends WorldElement {
         realWorld.removeElementToCell(new EnemyElement(currentX, currentY));
         currentWorldPerception.removeElementToCell(new EnemyElement(currentX, currentY));
         return realWorld;
+    }
+    
+    public void randomMove(World realWorld){
+        Random rand = new Random();
+        int randInt = rand.nextInt(4);
+        switch(randInt){
+            case 0:
+                moveUp(realWorld);
+                break;
+            case 1:
+                moveDown(realWorld);
+                break;
+            case 2:
+                moveLeft(realWorld);
+                break;
+            default:
+                moveRight(realWorld);
+                break;
+        }
+    }
+    
+    public void randomMoveUpRestricted(World realWorld){
+        Random rand = new Random();
+        int randInt = rand.nextInt(3);
+        switch(randInt){
+            case 0:
+                moveDown(realWorld);
+                break;
+            case 1:
+                moveLeft(realWorld);
+                break;
+            default:
+                moveRight(realWorld);
+                break;
+        }
+    }
+    
+    public void randomMoveDownRestricted(World realWorld){
+        Random rand = new Random();
+        int randInt = rand.nextInt(3);
+        switch(randInt){
+            case 0:
+                moveUp(realWorld);
+                break;
+            case 1:
+                moveLeft(realWorld);
+                break;
+            default:
+                moveRight(realWorld);
+                break;
+        }
+    }
+    
+    public void randomMoveLeftRestricted(World realWorld){
+        Random rand = new Random();
+        int randInt = rand.nextInt(3);
+        switch(randInt){
+            case 0:
+                moveUp(realWorld);
+                break;
+            case 1:
+                moveDown(realWorld);
+                break;
+            default:
+                moveRight(realWorld);
+                break;
+        }
+    }
+    
+    public void randomMoveRightRestricted(World realWorld){
+        Random rand = new Random();
+        int randInt = rand.nextInt(3);
+        switch(randInt){
+            case 0:
+                moveUp(realWorld);
+                break;
+            case 1:
+                moveDown(realWorld);
+                break;
+            default:
+                moveLeft(realWorld);
+                break;
+        }
     }
 
     @Override

@@ -5,8 +5,9 @@ import java.util.Random;
 
 public class Rule {
     public enum Action {Attack, Chase_Up, Chase_Down, Chase_Left, Chase_Right,
-                        Move_Random, Move_Up ,Move_Down, Move_Left, Move_Right,
-                        Move_Restricted_Upward,Move_Restricted_Downward,Move_Restricted_Leftward,Move_Restricted_Rightward};
+                        Move_Random,
+                        Move_Restricted_Upward,Move_Restricted_Downward,
+                        Move_Restricted_Leftward,Move_Restricted_Rightward};
     
     protected ArrayList<Axiom> axioms;
     
@@ -26,22 +27,6 @@ public class Rule {
             if(!condition.evaluate(world, x, y)) return false;
         }
         return true;
-    }
-    
-    public static Action getRandomMove(){
-        Random rand = new Random();
-        int randInt = rand.nextInt(4);
-        switch(randInt){
-            case 0:
-                return Action.Move_Up;
-            case 1:
-                return Action.Move_Down;
-            case 2:
-                return Action.Move_Left;
-            case 3:
-                return Action.Move_Right;    
-        }
-        return Action.Move_Right;
     }
     
     public Action getCurrentAction(){
