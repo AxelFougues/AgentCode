@@ -49,113 +49,143 @@ public class Axiom {
     }
 
     public boolean checkN(World world, int X, int Y) {
+        System.out.println("is there an " + actor.toString() + " north of (" + X + ", " + Y +")");
+        
         if ((X >= 0 && X < world.worldDimensions) && (Y >= 0 && Y < world.worldDimensions - 1)) {
             for (int x = 0; x < world.worldDimensions; x++) {
-                for (int y = Y; y > 0; y--) {
+                for (int y = Y - 1; y > 0; y--) {
                     switch (actor) {
                         case A:
                             if (world.elementExists(new AgentElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case E:
                             if (world.elementExists(new EnemyElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case O:
-                            if(world.elementExists(new ObstacleElement(x, y)))
+                            if (world.elementExists(new ObstacleElement(x, y))) {
                                 return true;
+                            }
+                            break;
                         case N:
                             if (world.hasEmptyCell(x, y)) {
                                 return true;
                             }
+                            break;
                     }
                 }
             }
         }
+        System.out.println("No\n");
         return false;
     }
 
     public boolean checkS(World world, int X, int Y) {
+        System.out.println("is there an " + actor.toString() + " south of (" + X + ", " + Y +")");
 
         if ((X >= 0 && X < world.worldDimensions) && (Y > 0 && Y < world.worldDimensions)) {
             for (int x = 0; x < world.worldDimensions; x++) {
-                for (int y = Y; y < world.worldDimensions; y++) {
+                for (int y = Y + 1; y < world.worldDimensions; y++) {
                     switch (actor) {
                         case A:
                             if (world.elementExists(new AgentElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case E:
                             if (world.elementExists(new EnemyElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case O:
-                            if(world.elementExists(new ObstacleElement(x, y)))
+                            if (world.elementExists(new ObstacleElement(x, y))) {
                                 return true;
+                            }
+                            break;
                         case N:
                             if (world.hasEmptyCell(x, y)) {
                                 return true;
                             }
+                            break;
                     }
                 }
             }
         }
+        System.out.println("No\n");
         return false;
     }
 
     public boolean checkW(World world, int X, int Y) {
+        
+        System.out.println("is there an " + actor.toString() + " west of (" + X + ", " + Y +")");
 
         if ((X > 0 && X < world.worldDimensions) && (Y >= 0 && Y < world.worldDimensions)) {
-            for (int x = X; x < world.worldDimensions; x++) {
-                for (int y = Y; y < world.worldDimensions; y++) {
+            for (int x = X - 1; x > 0; x--) {
+                for (int y = 0; y < world.worldDimensions; y++) {
                     switch (actor) {
                         case A:
                             if (world.elementExists(new AgentElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case E:
                             if (world.elementExists(new EnemyElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case O:
-                            if(world.elementExists(new ObstacleElement(x, y)))
+                            if (world.elementExists(new ObstacleElement(x, y))) {
                                 return true;
+                            }
+                            break;
                         case N:
                             if (world.hasEmptyCell(x, y)) {
                                 return true;
                             }
+                            break;
                     }
                 }
             }
         }
+        System.out.println("No\n");
         return false;
     }
 
     public boolean checkE(World world, int X, int Y) {
+        System.out.println("is there an " + actor.toString() + " east of (" + X + ", " + Y +")");
 
         if ((X >= 0 && X < world.worldDimensions - 1) && (Y >= 0 && Y < world.worldDimensions)) {
-            for (int x = X; x > 0; x--) {
-                for (int y = Y; y < world.worldDimensions; y++) {
+            for (int x = X + 1; x < world.worldDimensions; x++) {
+                for (int y = 0; y < world.worldDimensions; y++) {
                     switch (actor) {
                         case A:
                             if (world.elementExists(new AgentElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case E:
                             if (world.elementExists(new EnemyElement(x, y))) {
                                 return true;
                             }
+                            break;
                         case O:
-                            if(world.elementExists(new ObstacleElement(x, y)))
+                            if (world.elementExists(new ObstacleElement(x, y))) {
                                 return true;
+                            }
+                            break;
                         case N:
                             if (world.hasEmptyCell(x, y)) {
                                 return true;
                             }
+                            break;
                     }
                 }
             }
         }
+        System.out.println("No\n");
         return false;
     }
 }
