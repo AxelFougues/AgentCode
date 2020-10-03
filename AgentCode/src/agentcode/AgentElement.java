@@ -42,87 +42,96 @@ public class AgentElement extends WorldElement {
     //######################################################################
     protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
         if (perceptionRadius == 1) {
-            currentWorldPerception.setCell(realWorld.getCell(currentX, currentY), currentX, currentY);
+            currentWorldPerception.setCell(realWorld.getCell(currentY, currentX), currentY, currentX);
             return;
         }
         for (int x = -perceptionRadius / 2; x <= perceptionRadius / 2; x++) {
             for (int y = -perceptionRadius / 2; y <= perceptionRadius / 2; y++) {
-                currentWorldPerception.setCell(realWorld.getCell(currentX + x, currentY + y), currentX + x, currentY + y);
+                currentWorldPerception.setCell(realWorld.getCell(currentY + x, currentX + y), currentY + x, currentX + y);
             }
         }
     }
 
     protected World next(World realWorld) { // choose the appropriate action and execute it
+        
+        System.out.println("============================ \n");
+        System.out.println("What does the Agent see ?? \n");
+        currentWorldPerception.display();
+        System.out.println("============================ \n");
+        try{Thread.sleep(100);}catch(Exception e){}
+        int index = 0;
 
-        for (Rule rule : rules) {
-            switch (rule.action) {
+        while (index < rules.size() && !rules.get(index).validate(realWorld, currentY, currentX)) {
+            index++;
+        }
+        
+        if (index >= rules.size()) {
+            System.out.println("Agent moving randomly.");
+            randomMove(realWorld);
+        } else {
+            switch (rules.get(index).action) {
                 case Attack:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        attack(realWorld);
-                    }
+                    System.out.println("Agent attacking.");
+                    attack(realWorld);
                     break;
                 case Chase_Up:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveUp(realWorld);
-                    }
+                    System.out.println("Agent chasing up.");
+                    moveUp(realWorld);
                     break;
                 case Chase_Down:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveDown(realWorld);
-                    }
+                    System.out.println("Agent chasing down.");
+                    moveDown(realWorld);
                     break;
                 case Chase_Left:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveLeft(realWorld);
-                    }
+                    System.out.println("Agent chasing left.");
+                    moveLeft(realWorld);
                     break;
                 case Chase_Right:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        moveRight(realWorld);
-                    }
+                    System.out.println("Agent chasing right.");
+                    moveRight(realWorld);
                     break;
-                
-                case Move_Random:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        randomMove(realWorld);
-                    }
-                    break;
-                case Move_Restricted_Upward:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        randomMoveUpRestricted(realWorld);
-                    }
-                    break;
-                case Move_Restricted_Downward:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        randomMoveDownRestricted(realWorld);
-                    }
-                    break;
-                case Move_Restricted_Leftward:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        randomMoveLeftRestricted(realWorld);
-                    }
-                    break;
-                case Move_Restricted_Rightward:
-                    if (rule.validate(realWorld, currentX, currentY)) {
-                        randomMoveRightRestricted(realWorld);
-                    }
+                default:
+                    System.out.println("Agent moving randomly.");
+                    randomMove(realWorld);
                     break;
             }
+
         }
 
         return realWorld;
     }
 
     protected World attack(World realWorld) {
-        realWorld.removeElementToCell(new EnemyElement(currentX, currentY));
-        currentWorldPerception.removeElementToCell(new EnemyElement(currentX, currentY));
+        realWorld.removeElementToCell(new EnemyElement(currentY, currentX));
+        currentWorldPerception.removeElementToCell(new EnemyElement(currentY, currentX));
         return realWorld;
     }
-    
-    public void randomMove(World realWorld){
+
+    public void randomMove(World realWorld) {
+        ArrayList<Integer> dir = new ArrayList<>();
+
+        if (realWorld.hasEmptyCell(currentY -1, currentX )) { //North Free
+            //System.out.println("Can move North");
+            dir.add(0); 
+        }
+        if (realWorld.hasEmptyCell(currentY +1, currentX )) { //South Free
+            //System.out.println("Can move South");
+            dir.add(1);
+        }
+        if (realWorld.hasEmptyCell(currentY, currentX -1)) { //West Free
+            //System.out.println("Can move West");
+            dir.add(2);
+        }
+        if (realWorld.hasEmptyCell(currentY , currentX+1)) { //East Free
+            //System.out.println("Can move East");
+            dir.add(3);
+        }
+        //System.out.println();
+
         Random rand = new Random();
-        int randInt = rand.nextInt(4);
-        switch(randInt){
+        int randInt = rand.nextInt(dir.size());
+
+        switch (dir.get(randInt)) {
             case 0:
                 moveUp(realWorld);
                 break;
@@ -134,70 +143,6 @@ public class AgentElement extends WorldElement {
                 break;
             default:
                 moveRight(realWorld);
-                break;
-        }
-    }
-    
-    public void randomMoveUpRestricted(World realWorld){
-        Random rand = new Random();
-        int randInt = rand.nextInt(3);
-        switch(randInt){
-            case 0:
-                moveDown(realWorld);
-                break;
-            case 1:
-                moveLeft(realWorld);
-                break;
-            default:
-                moveRight(realWorld);
-                break;
-        }
-    }
-    
-    public void randomMoveDownRestricted(World realWorld){
-        Random rand = new Random();
-        int randInt = rand.nextInt(3);
-        switch(randInt){
-            case 0:
-                moveUp(realWorld);
-                break;
-            case 1:
-                moveLeft(realWorld);
-                break;
-            default:
-                moveRight(realWorld);
-                break;
-        }
-    }
-    
-    public void randomMoveLeftRestricted(World realWorld){
-        Random rand = new Random();
-        int randInt = rand.nextInt(3);
-        switch(randInt){
-            case 0:
-                moveUp(realWorld);
-                break;
-            case 1:
-                moveDown(realWorld);
-                break;
-            default:
-                moveRight(realWorld);
-                break;
-        }
-    }
-    
-    public void randomMoveRightRestricted(World realWorld){
-        Random rand = new Random();
-        int randInt = rand.nextInt(3);
-        switch(randInt){
-            case 0:
-                moveUp(realWorld);
-                break;
-            case 1:
-                moveDown(realWorld);
-                break;
-            default:
-                moveLeft(realWorld);
                 break;
         }
     }
