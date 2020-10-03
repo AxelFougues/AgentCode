@@ -1,14 +1,13 @@
 package agentcode;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class AgentElement extends WorldElement{
-    
+public class AgentElement extends WorldElement {
+
     protected int perceptionRadius; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
-    
+
     protected World currentWorldPerception;
-    
+
     protected ArrayList<Rule> rules;
 
     public AgentElement(int currentX, int currentY, ArrayList<Rule> rules) {
@@ -16,7 +15,7 @@ public class AgentElement extends WorldElement{
         this.rules = rules;
         this.currentWorldPerception = new World(10);
     }
-    
+
     public AgentElement(int currentX, int currentY) {
         super(currentX, currentY);
         this.currentWorldPerception = new World(10);
@@ -28,85 +27,111 @@ public class AgentElement extends WorldElement{
     public String toString() {
         return "A";
     }
-    
+
     @Override
-    public World playTurn(World realWorld){
+    public World playTurn(World realWorld) {
         updatePerception(realWorld);
         return next(realWorld);
     }
-    
-    public void setRules(ArrayList<Rule> rules){
+
+    public void setRules(ArrayList<Rule> rules) {
         this.rules = rules;
     }
-    
+
     //######################################################################
-    
-    
-    protected void updatePerception(World realWorld){ //Refresh currentWorldPerception with available world data
-        if(perceptionRadius == 1){currentWorldPerception.setCell(realWorld.getCell(currentX, currentY), currentX, currentY); return;}
-        for (int x = -perceptionRadius/2; x <= perceptionRadius/2; x++) {
-            for (int y = -perceptionRadius/2; y <= perceptionRadius/2; y++) {
+    protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
+        if (perceptionRadius == 1) {
+            currentWorldPerception.setCell(realWorld.getCell(currentX, currentY), currentX, currentY);
+            return;
+        }
+        for (int x = -perceptionRadius / 2; x <= perceptionRadius / 2; x++) {
+            for (int y = -perceptionRadius / 2; y <= perceptionRadius / 2; y++) {
                 currentWorldPerception.setCell(realWorld.getCell(currentX + x, currentY + y), currentX + x, currentY + y);
             }
         }
     }
-    
-    protected World next(World realWorld){ // choose the appropriate action and execute it
-        
+
+    protected World next(World realWorld) { // choose the appropriate action and execute it
+
         for (Rule rule : rules) {
-            if(rule.validate(realWorld, currentX, currentY)){
-                switch(rule.name){
-                    case "Attack":
+            switch (rule.action) {
+                case Attack:
+                    if (rule.validate(realWorld, currentX, currentY)) {
                         attack(realWorld);
-                        break;
-                    case "Move Random":
-                        Random rand = new Random();
-                        int move = rand.nextInt(4);
-                        switch(move){
-                            case 0: 
+                    }
+                    break;
+                case Chase_Up:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveUp(realWorld);
+                    }
+                    break;
+                case Chase_Down:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveDown(realWorld);
+                    }
+                    break;
+                case Chase_Left:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveLeft(realWorld);
+                    }
+                    break;
+                case Chase_Right:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveRight(realWorld);
+                    }
+                    break;
+                case Move_Up:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveUp(realWorld);
+                    }
+                    break;
+                case Move_Down:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveDown(realWorld);
+                    }
+                    break;
+                case Move_Left:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveLeft(realWorld);
+                    }
+                    break;
+                case Move_Right:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        moveRight(realWorld);
+                    }
+                    break;
+                case Move_Random:
+                    if (rule.validate(realWorld, currentX, currentY)) {
+                        switch (Rule.getRandomMove()) {
+                            case Move_Up:
                                 moveUp(realWorld);
                                 break;
-                            case 1: 
+                            case Move_Down:
                                 moveDown(realWorld);
                                 break;
-                            case 2: 
+                            case Move_Left:
                                 moveLeft(realWorld);
                                 break;
-                            case 3: 
+                            case Move_Right:
                                 moveRight(realWorld);
                                 break;
                         }
-                        break;
-                    case "Chase Up":
-                        moveUp(realWorld);
-                        break;
-                    case "Chase Down":
-                        moveDown(realWorld);
-                        break;
-                    case "Chase Left":
-                        moveLeft(realWorld);
-                        break;
-                    case "Chase Right":
-                        moveRight(realWorld);
-                        break;
-                }
-                break;
+                    }
+                    break;
             }
         }
-        
-            
-        
+
         return realWorld;
     }
-    
-    protected World attack (World realWorld){
+
+    protected World attack(World realWorld) {
         realWorld.removeElementToCell(new EnemyElement(currentX, currentY));
         currentWorldPerception.removeElementToCell(new EnemyElement(currentX, currentY));
         return realWorld;
     }
-    
+
     @Override
-    protected World moveUp(World realWorld){
+    protected World moveUp(World realWorld) {
         realWorld.removeElementToCell(this);
         currentWorldPerception.removeElementToCell(this);
         currentY--;
@@ -114,9 +139,9 @@ public class AgentElement extends WorldElement{
         currentWorldPerception.addElementToCell(this);
         return realWorld;
     }
-    
+
     @Override
-    protected World moveDown(World realWorld){
+    protected World moveDown(World realWorld) {
         realWorld.removeElementToCell(this);
         currentWorldPerception.removeElementToCell(this);
         currentY++;
@@ -124,9 +149,9 @@ public class AgentElement extends WorldElement{
         currentWorldPerception.addElementToCell(this);
         return realWorld;
     }
-    
+
     @Override
-    protected World moveLeft(World realWorld){
+    protected World moveLeft(World realWorld) {
         realWorld.removeElementToCell(this);
         currentWorldPerception.removeElementToCell(this);
         currentX--;
@@ -134,9 +159,9 @@ public class AgentElement extends WorldElement{
         currentWorldPerception.addElementToCell(this);
         return realWorld;
     }
-    
+
     @Override
-    protected World moveRight(World realWorld){
+    protected World moveRight(World realWorld) {
         realWorld.removeElementToCell(this);
         currentWorldPerception.removeElementToCell(this);
         currentX++;
@@ -144,5 +169,5 @@ public class AgentElement extends WorldElement{
         currentWorldPerception.addElementToCell(this);
         return realWorld;
     }
-    
+
 }
