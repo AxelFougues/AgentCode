@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class AgentElement extends WorldElement {
 
-    protected int perceptionRadius = 2; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
+    protected int perceptionRadius = 2; //0 -> soi meme; 1 -> 1 autour; ...
 
     protected World currentWorldPerception;
 
@@ -43,21 +43,22 @@ public class AgentElement extends WorldElement {
     protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
         currentWorldPerception = new World(realWorld.worldDimensions);
         
-        if (perceptionRadius == 1)
+        if (perceptionRadius <= 0)
             return;
         
-        for (int x = -perceptionRadius / 2; x <= perceptionRadius / 2; x++) {
-            for (int y = -perceptionRadius / 2; y <= perceptionRadius / 2; y++) {
-                currentWorldPerception.setCell(realWorld.getCell(currentY + x, currentX + y), currentY + x, currentX + y);
+        for (int i = -perceptionRadius; i <= perceptionRadius; i++) {
+            for (int j = -perceptionRadius; j <= perceptionRadius; j++) {
+                if((0 <= (currentY + i) && (currentY + i) < realWorld.worldDimensions)
+                 &&(0 <= (currentX + j) && (currentX + j) < realWorld.worldDimensions))
+                    currentWorldPerception.setCell(realWorld.getCell(currentY + i, currentX + j), currentY + i, currentX + j);
             }
         }
     }
 
     protected World next(World realWorld) { // choose the appropriate action and execute it
-        System.out.println("============================ \n");
+
         System.out.println("What does the Agent see ?? \n");
         currentWorldPerception.display();
-        System.out.println("============================ \n");
         //try{Thread.sleep(100);}catch(Exception e){}
         int index = 0;
 
