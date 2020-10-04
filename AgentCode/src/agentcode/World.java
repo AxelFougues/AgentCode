@@ -61,7 +61,18 @@ public class World {
     @Override
     public String toString() {
         String result = "\n";
+        
+        result += "   ";
+        for (int y = 0; y < worldDimensions; y++)
+            result += y + " ";
+        result += "\n";
+        result += "   ";
+        for (int y = 0; y < worldDimensions; y++)
+            result += "- ";
+        result += "\n";
+        
         for (int x = 0; x < worldDimensions; x++) {
+            result += x + "| ";
             for (int y = 0; y < worldDimensions; y++) {
                 result += worldGrid[x][y].toString() + " ";
             }
@@ -80,6 +91,11 @@ public class World {
                 realWorld = worldGrid[x][y].playTurn(realWorld);
             }
         }
+        
+        for (int x = 0; x < worldDimensions; x++)
+            for (int y = 0; y < worldDimensions; y++)
+                worldGrid[x][y].resetTurnPlayedToken();
+                
         return realWorld;
     }
     

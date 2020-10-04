@@ -49,7 +49,7 @@ public class Axiom {
     }
 
     public boolean checkN(World world, int X, int Y) {
-        System.out.println("is there an " + actor.toString() + " north of (" + X + ", " + Y +")");
+        System.out.println("is there an " + actor.toString() + " north of (" + Y + ", " + X +")");
         
         if ((X >= 0 && X < world.worldDimensions) && (Y >= 0 && Y < world.worldDimensions - 1)) {
             for (int x = 0; x < world.worldDimensions; x++) {
@@ -84,7 +84,7 @@ public class Axiom {
     }
 
     public boolean checkS(World world, int X, int Y) {
-        System.out.println("is there an " + actor.toString() + " south of (" + X + ", " + Y +")");
+        System.out.println("is there an " + actor.toString() + " south of (" + Y + ", " + X +")");
 
         if ((X >= 0 && X < world.worldDimensions) && (Y > 0 && Y < world.worldDimensions)) {
             for (int x = 0; x < world.worldDimensions; x++) {
@@ -120,7 +120,7 @@ public class Axiom {
 
     public boolean checkW(World world, int X, int Y) {
         
-        System.out.println("is there an " + actor.toString() + " west of (" + X + ", " + Y +")");
+        System.out.println("is there an " + actor.toString() + " west of (" + Y + ", " + X +")");
 
         if ((X > 0 && X < world.worldDimensions) && (Y >= 0 && Y < world.worldDimensions)) {
             for (int x = X - 1; x > 0; x--) {
@@ -155,7 +155,7 @@ public class Axiom {
     }
 
     public boolean checkE(World world, int X, int Y) {
-        System.out.println("is there an " + actor.toString() + " east of (" + X + ", " + Y +")");
+        System.out.println("is there an " + actor.toString() + " east of (" + Y + ", " + X +")");
 
         if ((X >= 0 && X < world.worldDimensions - 1) && (Y >= 0 && Y < world.worldDimensions)) {
             for (int x = X + 1; x < world.worldDimensions; x++) {

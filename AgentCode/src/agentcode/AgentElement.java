@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class AgentElement extends WorldElement {
 
-    protected int perceptionRadius; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
+    protected int perceptionRadius = 2; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
 
     protected World currentWorldPerception;
 
@@ -41,10 +41,11 @@ public class AgentElement extends WorldElement {
 
     //######################################################################
     protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
-        if (perceptionRadius == 1) {
-            currentWorldPerception.setCell(realWorld.getCell(currentY, currentX), currentY, currentX);
+        currentWorldPerception = new World(realWorld.worldDimensions);
+        
+        if (perceptionRadius == 1)
             return;
-        }
+        
         for (int x = -perceptionRadius / 2; x <= perceptionRadius / 2; x++) {
             for (int y = -perceptionRadius / 2; y <= perceptionRadius / 2; y++) {
                 currentWorldPerception.setCell(realWorld.getCell(currentY + x, currentX + y), currentY + x, currentX + y);
@@ -53,15 +54,14 @@ public class AgentElement extends WorldElement {
     }
 
     protected World next(World realWorld) { // choose the appropriate action and execute it
-        
         System.out.println("============================ \n");
         System.out.println("What does the Agent see ?? \n");
         currentWorldPerception.display();
         System.out.println("============================ \n");
-        try{Thread.sleep(100);}catch(Exception e){}
+        //try{Thread.sleep(100);}catch(Exception e){}
         int index = 0;
 
-        while (index < rules.size() && !rules.get(index).validate(realWorld, currentY, currentX)) {
+        while (index < rules.size() && !rules.get(index).validate(currentWorldPerception, currentY, currentX)) {
             index++;
         }
         
@@ -95,15 +95,15 @@ public class AgentElement extends WorldElement {
                     randomMove(realWorld);
                     break;
             }
-
         }
+        
+        System.out.println("Agent's position : (" + currentX + "," + currentY +")");
 
         return realWorld;
     }
 
     protected World attack(World realWorld) {
         realWorld.removeElementToCell(new EnemyElement(currentY, currentX));
-        currentWorldPerception.removeElementToCell(new EnemyElement(currentY, currentX));
         return realWorld;
     }
 
@@ -146,45 +146,4 @@ public class AgentElement extends WorldElement {
                 break;
         }
     }
-
-    @Override
-    protected World moveUp(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentY--;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveDown(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentY++;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveLeft(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentX--;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveRight(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentX++;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
 }

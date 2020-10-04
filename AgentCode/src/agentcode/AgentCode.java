@@ -25,6 +25,7 @@ public class AgentCode {
 
         //Then call playTurn to move one step forward
         for (int i = 0; i < 20; i++) {
+            System.out.println("Itération " + (i+1));
             w = w.playTurn(w);
             w.display();
             try {
