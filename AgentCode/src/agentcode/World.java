@@ -117,9 +117,13 @@ public class World {
         }*/
     	for(Pair<Integer,Integer> elem : playingOrder) {
     		realWorld = worldGrid[elem.getValue()][elem.getKey()].playTurn(realWorld);
+                
+                System.out.println("Tour de "+ worldGrid[elem.getValue()][elem.getKey()].toString());
+                this.display();
+                try {
+                    Thread.sleep(1000);
+                }catch(Exception e){}
     	}
-
-
 
         for (int x = 0; x < worldDimensions; x++)
             for (int y = 0; y < worldDimensions; y++)

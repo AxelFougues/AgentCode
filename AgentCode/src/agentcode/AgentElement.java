@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class AgentElement extends WorldElement {
 
-    protected int perceptionRadius = 2; //0 -> soi meme; 1 -> 1 autour; ...
+    protected int perceptionRadius = 6; //0 -> soi meme; 1 -> 1 autour; ...
 
     protected World currentWorldPerception;
 
@@ -60,8 +60,8 @@ public class AgentElement extends WorldElement {
     	int oldX = this.currentX;
     	int oldY = this.currentY;
 
-        System.out.println("What does the Agent see ?? \n");
-        currentWorldPerception.display();
+        //System.out.println("What does the Agent see ?? \n");
+        //currentWorldPerception.display();
         //try{Thread.sleep(100);}catch(Exception e){}
         int index = 0;
 
@@ -101,7 +101,7 @@ public class AgentElement extends WorldElement {
             }
         }
 
-        System.out.println("Agent's position : (" + currentX + "," + currentY +")");
+        //System.out.println("Agent's position : (" + currentX + "," + currentY +")");
         realWorld.UpdatePlayOrder(oldX, oldY, currentX,currentY);
 
         return realWorld;
