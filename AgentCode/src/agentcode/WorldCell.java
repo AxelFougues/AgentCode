@@ -41,9 +41,18 @@ public class WorldCell {
 
     public World playTurn(World realWorld) {
         for (int i = 0; i < elements.size(); i++) {
-            realWorld = elements.get(i).playTurn(realWorld);
+            WorldElement element = elements.get(i);
+            if(! element.didPlayItsTurn()){
+                realWorld = element.playTurn(realWorld);
+                element.setPlayedItsTurn(true);
+            }
         }
         return realWorld;
+    }
+    
+    public void resetTurnPlayedToken() {
+        for (int i = 0; i < elements.size(); i++)
+            elements.get(i).setPlayedItsTurn(false);
     }
 
     @Override

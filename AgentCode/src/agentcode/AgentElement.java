@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class AgentElement extends WorldElement {
 
-    protected int perceptionRadius; //1 is single cell, 2 is 3x3, 3 is 5x5 etc...
+    protected int perceptionRadius = 2; //0 -> soi meme; 1 -> 1 autour; ...
 
     protected World currentWorldPerception;
 
@@ -41,27 +41,31 @@ public class AgentElement extends WorldElement {
 
     //######################################################################
     protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
-        if (perceptionRadius == 1) {
-            currentWorldPerception.setCell(realWorld.getCell(currentY, currentX), currentY, currentX);
+        currentWorldPerception = new World(realWorld.worldDimensions);
+        
+        if (perceptionRadius <= 0)
             return;
-        }
-        for (int x = -perceptionRadius / 2; x <= perceptionRadius / 2; x++) {
-            for (int y = -perceptionRadius / 2; y <= perceptionRadius / 2; y++) {
-                currentWorldPerception.setCell(realWorld.getCell(currentY + x, currentX + y), currentY + x, currentX + y);
+        
+        for (int i = -perceptionRadius; i <= perceptionRadius; i++) {
+            for (int j = -perceptionRadius; j <= perceptionRadius; j++) {
+                if((0 <= (currentX + i) && (currentX + i) < realWorld.worldDimensions)
+                 &&(0 <= (currentY + j) && (currentY + j) < realWorld.worldDimensions))
+                    currentWorldPerception.setCell(realWorld.getCell(currentX + i, currentY + j), currentX + i, currentY + j);
             }
         }
     }
 
     protected World next(World realWorld) { // choose the appropriate action and execute it
-        
-        System.out.println("============================ \n");
+
+    	int oldX = this.currentX;
+    	int oldY = this.currentY;
+    	
         System.out.println("What does the Agent see ?? \n");
         currentWorldPerception.display();
-        System.out.println("============================ \n");
-        try{Thread.sleep(100);}catch(Exception e){}
+        //try{Thread.sleep(100);}catch(Exception e){}
         int index = 0;
 
-        while (index < rules.size() && !rules.get(index).validate(realWorld, currentY, currentX)) {
+        while (index < rules.size() && !rules.get(index).validate(currentWorldPerception, currentX, currentY)) {
             index++;
         }
         
@@ -95,34 +99,35 @@ public class AgentElement extends WorldElement {
                     randomMove(realWorld);
                     break;
             }
-
         }
+        
+        System.out.println("Agent's position : (" + currentX + "," + currentY +")");
+        realWorld.UpdatePlayOrder(oldX, oldY, currentX,currentY);
 
         return realWorld;
     }
 
     protected World attack(World realWorld) {
-        realWorld.removeElementToCell(new EnemyElement(currentY, currentX));
-        currentWorldPerception.removeElementToCell(new EnemyElement(currentY, currentX));
+        realWorld.removeElementToCell(new EnemyElement(currentX, currentY));
         return realWorld;
     }
 
     public void randomMove(World realWorld) {
         ArrayList<Integer> dir = new ArrayList<>();
 
-        if (realWorld.hasEmptyCell(currentY -1, currentX )) { //North Free
+        if (realWorld.hasEmptyCell(currentX, currentY -1)) { //North Free
             //System.out.println("Can move North");
             dir.add(0); 
         }
-        if (realWorld.hasEmptyCell(currentY +1, currentX )) { //South Free
+        if (realWorld.hasEmptyCell(currentX, currentY +1)) { //South Free
             //System.out.println("Can move South");
             dir.add(1);
         }
-        if (realWorld.hasEmptyCell(currentY, currentX -1)) { //West Free
+        if (realWorld.hasEmptyCell(currentX -1, currentY)) { //West Free
             //System.out.println("Can move West");
             dir.add(2);
         }
-        if (realWorld.hasEmptyCell(currentY , currentX+1)) { //East Free
+        if (realWorld.hasEmptyCell(currentX+1 , currentY)) { //East Free
             //System.out.println("Can move East");
             dir.add(3);
         }
@@ -146,45 +151,4 @@ public class AgentElement extends WorldElement {
                 break;
         }
     }
-
-    @Override
-    protected World moveUp(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentY--;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveDown(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentY++;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveLeft(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentX--;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
-    @Override
-    protected World moveRight(World realWorld) {
-        realWorld.removeElementToCell(this);
-        currentWorldPerception.removeElementToCell(this);
-        currentX++;
-        realWorld.addElementToCell(this);
-        currentWorldPerception.addElementToCell(this);
-        return realWorld;
-    }
-
 }
