@@ -13,6 +13,9 @@ public class EnemyElement extends WorldElement{
 
     @Override
     public World playTurn(World realWorld) {
+    	int oldX=currentX;
+    	int oldY=currentY;
+    	
         switch((int)(Math.random() * 5)){
             case 1: moveUp(realWorld);
                 break;
@@ -23,6 +26,7 @@ public class EnemyElement extends WorldElement{
             case 4: moveRight(realWorld);
                 break;
         }
+        realWorld.UpdatePlayOrder(oldX, oldY, currentX, currentY);
         return realWorld;
     }
     
