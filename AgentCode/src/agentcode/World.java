@@ -103,6 +103,7 @@ public class World {
     	for(Pair<Integer,Integer> elem : playingOrder) {
     		if(elem.getKey()== oldX && elem.getValue()== oldY) {
     			playingOrder.set(i,new Pair<Integer,Integer>(newX,newY));
+    			break;
     		}
     		i++;
     	}
