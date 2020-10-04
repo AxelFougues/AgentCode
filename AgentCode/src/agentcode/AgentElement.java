@@ -48,9 +48,9 @@ public class AgentElement extends WorldElement {
         
         for (int i = -perceptionRadius; i <= perceptionRadius; i++) {
             for (int j = -perceptionRadius; j <= perceptionRadius; j++) {
-                if((0 <= (currentY + i) && (currentY + i) < realWorld.worldDimensions)
-                 &&(0 <= (currentX + j) && (currentX + j) < realWorld.worldDimensions))
-                    currentWorldPerception.setCell(realWorld.getCell(currentY + i, currentX + j), currentY + i, currentX + j);
+                if((0 <= (currentX + i) && (currentX + i) < realWorld.worldDimensions)
+                 &&(0 <= (currentY + j) && (currentY + j) < realWorld.worldDimensions))
+                    currentWorldPerception.setCell(realWorld.getCell(currentX + i, currentY + j), currentX + i, currentY + j);
             }
         }
     }
@@ -62,7 +62,7 @@ public class AgentElement extends WorldElement {
         //try{Thread.sleep(100);}catch(Exception e){}
         int index = 0;
 
-        while (index < rules.size() && !rules.get(index).validate(currentWorldPerception, currentY, currentX)) {
+        while (index < rules.size() && !rules.get(index).validate(currentWorldPerception, currentX, currentY)) {
             index++;
         }
         
@@ -104,26 +104,26 @@ public class AgentElement extends WorldElement {
     }
 
     protected World attack(World realWorld) {
-        realWorld.removeElementToCell(new EnemyElement(currentY, currentX));
+        realWorld.removeElementToCell(new EnemyElement(currentX, currentY));
         return realWorld;
     }
 
     public void randomMove(World realWorld) {
         ArrayList<Integer> dir = new ArrayList<>();
 
-        if (realWorld.hasEmptyCell(currentY -1, currentX )) { //North Free
+        if (realWorld.hasEmptyCell(currentX, currentY -1)) { //North Free
             //System.out.println("Can move North");
             dir.add(0); 
         }
-        if (realWorld.hasEmptyCell(currentY +1, currentX )) { //South Free
+        if (realWorld.hasEmptyCell(currentX, currentY +1)) { //South Free
             //System.out.println("Can move South");
             dir.add(1);
         }
-        if (realWorld.hasEmptyCell(currentY, currentX -1)) { //West Free
+        if (realWorld.hasEmptyCell(currentX -1, currentY)) { //West Free
             //System.out.println("Can move West");
             dir.add(2);
         }
-        if (realWorld.hasEmptyCell(currentY , currentX+1)) { //East Free
+        if (realWorld.hasEmptyCell(currentX+1 , currentY)) { //East Free
             //System.out.println("Can move East");
             dir.add(3);
         }

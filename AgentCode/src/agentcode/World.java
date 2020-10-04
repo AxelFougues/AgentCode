@@ -8,20 +8,21 @@ public class World {
     public World(int worldDimensions) {
         this.worldDimensions = worldDimensions;
         worldGrid = new WorldCell[worldDimensions][worldDimensions];
-        for (int x = 0; x < worldDimensions; x++) {
-            for (int y = 0; y < worldDimensions; y++) {
-                worldGrid[x][y] = new WorldCell();
+        
+        for (int y = 0; y < worldDimensions; y++) {
+            for (int x = 0; x < worldDimensions; x++) {
+                worldGrid[y][x] = new WorldCell();
                 if(y == 0 && x == 0){
-                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                    worldGrid[y][x].addElement(new ObstacleElement(x,y));
                 }
                 else if(y == worldDimensions -1 && x == worldDimensions -1){
-                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                    worldGrid[y][x].addElement(new ObstacleElement(x,y));
                 }
                 else if(y == worldDimensions -1 || x == worldDimensions -1){
-                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                    worldGrid[y][x].addElement(new ObstacleElement(x,y));
                 }
                 else if(y == 0 || x == 0){
-                    worldGrid[x][y].addElement(new ObstacleElement(x,y));
+                    worldGrid[y][x].addElement(new ObstacleElement(x,y));
                 }
             }
         }
@@ -29,7 +30,7 @@ public class World {
     
     public boolean addElementToCell(WorldElement element){
         if( element.getX() > 0 && element.getX() < worldDimensions && element.getY() > 0 && element.getY() < worldDimensions){
-            worldGrid[element.getX()][element.getY()].addElement(element);
+            worldGrid[element.getY()][element.getX()].addElement(element);
             return true;
         }
         return false;
@@ -37,25 +38,25 @@ public class World {
     
     public boolean removeElementToCell(WorldElement element){
         if( element.getX() > 0 && element.getX() < worldDimensions && element.getY() > 0 && element.getY() < worldDimensions){
-            return worldGrid[element.getX()][element.getY()].removeElement(element);
+            return worldGrid[element.getY()][element.getX()].removeElement(element);
         }
         return false;
     }
     
     public WorldCell getCell(int x, int y){
-        return worldGrid[x][y];
+        return worldGrid[y][x];
     }
     
     public void setCell(WorldCell cell, int x, int y){
-        worldGrid[x][y] = cell;
+        worldGrid[y][x] = cell;
     }
     
     public boolean elementExists(WorldElement element){
-        return worldGrid[element.getX()][element.getY()].containsElement(element);
+        return worldGrid[element.getY()][element.getX()].containsElement(element);
     }
     
-    public boolean hasEmptyCell(int x , int y){
-        return worldGrid[x][y].isEmpty();
+    public boolean hasEmptyCell(int x, int y){
+        return worldGrid[y][x].isEmpty();
     }
 
     @Override
@@ -63,18 +64,18 @@ public class World {
         String result = "\n";
         
         result += "   ";
-        for (int y = 0; y < worldDimensions; y++)
-            result += y + " ";
+        for (int x = 0; x < worldDimensions; x++)
+            result += x + " ";
         result += "\n";
         result += "   ";
-        for (int y = 0; y < worldDimensions; y++)
+        for (int x = 0; x < worldDimensions; x++)
             result += "- ";
         result += "\n";
         
-        for (int x = 0; x < worldDimensions; x++) {
-            result += x + "| ";
-            for (int y = 0; y < worldDimensions; y++) {
-                result += worldGrid[x][y].toString() + " ";
+        for (int y = 0; y < worldDimensions; y++) {
+            result += y + "| ";
+            for (int x = 0; x < worldDimensions; x++) {
+                result += worldGrid[y][x].toString() + " ";
             }
             result += "\n";
         }

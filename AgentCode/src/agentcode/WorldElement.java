@@ -10,13 +10,13 @@ public abstract class WorldElement implements Cloneable {
     private boolean playedItsTurn;
 
     public WorldElement(int currentX, int currentY) {
-        this.currentY = currentX;
-        this.currentX = currentY;
+        this.currentX = currentX;
+        this.currentY = currentY;
         playedItsTurn= false;
     }
     
-    public int getX(){return currentY;}
-    public int getY(){return currentX;}
+    public int getX(){return currentX;}
+    public int getY(){return currentY;}
 
     public abstract World playTurn(World realWorld);
     
