@@ -21,6 +21,10 @@ public class AgentCode {
         //This is how to add elements to the world
         w.addElementToCell(new EnemyElement(5, 5));
         w.addElementToCell(new AgentElement(5, 2, rules));
+        
+        w.AddElementToPlayOrder(5, 2);
+        w.AddElementToPlayOrder(5, 5);
+        
         w.display();
 
         //Then call playTurn to move one step forward

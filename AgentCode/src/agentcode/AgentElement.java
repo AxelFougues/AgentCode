@@ -42,10 +42,10 @@ public class AgentElement extends WorldElement {
     //######################################################################
     protected void updatePerception(World realWorld) { //Refresh currentWorldPerception with available world data
         currentWorldPerception = new World(realWorld.worldDimensions);
-        
+
         if (perceptionRadius <= 0)
             return;
-        
+
         for (int i = -perceptionRadius; i <= perceptionRadius; i++) {
             for (int j = -perceptionRadius; j <= perceptionRadius; j++) {
                 if((0 <= (currentX + i) && (currentX + i) < realWorld.worldDimensions)
@@ -57,6 +57,9 @@ public class AgentElement extends WorldElement {
 
     protected World next(World realWorld) { // choose the appropriate action and execute it
 
+    	int oldX = this.currentX;
+    	int oldY = this.currentY;
+
         System.out.println("What does the Agent see ?? \n");
         currentWorldPerception.display();
         //try{Thread.sleep(100);}catch(Exception e){}
@@ -65,7 +68,7 @@ public class AgentElement extends WorldElement {
         while (index < rules.size() && !rules.get(index).validate(currentWorldPerception, currentX, currentY)) {
             index++;
         }
-        
+
         if (index >= rules.size()) {
             System.out.println("Agent moving randomly.");
             randomMove(realWorld);
@@ -97,8 +100,9 @@ public class AgentElement extends WorldElement {
                     break;
             }
         }
-        
+
         System.out.println("Agent's position : (" + currentX + "," + currentY +")");
+        realWorld.UpdatePlayOrder(oldX, oldY, currentX,currentY);
 
         return realWorld;
     }
@@ -113,7 +117,7 @@ public class AgentElement extends WorldElement {
 
         if (realWorld.hasEmptyCell(currentX, currentY -1)) { //North Free
             //System.out.println("Can move North");
-            dir.add(0); 
+            dir.add(0);
         }
         if (realWorld.hasEmptyCell(currentX, currentY +1)) { //South Free
             //System.out.println("Can move South");
